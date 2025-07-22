@@ -10,7 +10,7 @@
 Crie uma Skill Alexa-hosted (Python) na Alexa: (_Create Skill_)
 
 1. Name your Skill: Escolha um nome de sua preferência (Ex: GeminiGPT)
-2. Choose a primary locale: Portuguese (BR)
+2. Choose a primary lole: Portuguese (BR)
 3. Clique em _Next_. Em tipo de experiência selecione: Other > Custom > _Alexa-hosted (Python)_
 4. _Hosting region_: Pode deixar o padrão _US East (N. Virginia)_
 5. Em _Templates_: Clique em _Import Skill_

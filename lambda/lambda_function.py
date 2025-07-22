@@ -23,13 +23,13 @@ logger.setLevel(logging.INFO)
 
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-# URL do endpoint da API
+# API endpoint URL
 url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={}".format(GOOGLE_API_KEY)
-# Cabeçalhos para a requisição
+# Headers for the request
 headers = {
     'Content-Type': 'application/json',
 }
-# Dados (payload) para serem enviados na requisição POST
+# Data (payload) to be sent in the POST request
 data = {
     "contents": [{
         "role":"user",
@@ -48,15 +48,15 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        data["contents"][0]["parts"][0]["text"] = "Você será minha assistente de I.A. Te daria comandos e iremos interagir conforme lhe orientar e treinar."
+        data["contents"][0]["parts"][0]["text"] = "You will be my vocal AI assistant, Gemini. Use informal language and slang. Keep responses personable and engaging."
         response = requests.post(url, json=data, headers=headers)
         if response.status_code == 200:
             response_data = response.json()
             text = (response_data.get("candidates", [{}])[0]
                 .get("content", {})
                 .get("parts", [{}])[0]
-                .get("text", "Texto não encontrado"))
-            speak_output = text + " Como posso te ajudar?"
+                .get("text", "Text not found"))
+            speak_output = text + " How can I help you?"
             response_text = {
                 "role": "model",
                 "parts": [{
@@ -65,7 +65,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
             }
             data["contents"].append(response_text)
         else:
-            speak_output = "Erro na requsição"
+            speak_output = "Error in request"
             
         return (
             handler_input.response_builder
@@ -97,7 +97,7 @@ class ChatIntentHandler(AbstractRequestHandler):
             text = (response_data.get("candidates", [{}])[0]
                 .get("content", {})
                 .get("parts", [{}])[0]
-                .get("text", "Texto não encontrado"))
+                .get("text", "Text not found"))
             speak_output = text
             response_text = {
                 "role": "model",
@@ -107,12 +107,12 @@ class ChatIntentHandler(AbstractRequestHandler):
             }
             data["contents"].append(response_text)
         else:
-            speak_output = "Não obtive uma resposta para sua solicitação"
+            speak_output = "I did not get a response to your request"
 
         return (
             handler_input.response_builder
                 .speak(speak_output)
-                .ask("Alguma outra pergunta?")
+                .ask("Any other question?")
                 .response
         )
 
